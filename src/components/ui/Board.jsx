@@ -6,7 +6,7 @@ import { calculateWinner } from '../utils/utils.jsx';
 // - xIsNext: boolean, true nếu lượt X
 // - squares: mảng 9 phần tử ('X'|'O'|null)
 // - onPlay(nextSquares): callback gọi khi có nước mới
-export default function Board({xIsNext, squares, onPlay}) {
+function Board({xIsNext, squares, onPlay}) {
   // Lấy thông tin thắng (nếu có) từ hàm tiện ích
   const winInfo = calculateWinner(squares);
   let status;
@@ -77,3 +77,5 @@ export default function Board({xIsNext, squares, onPlay}) {
     </>
   );
 }
+
+export default Board; 

@@ -1,14 +1,26 @@
 import {useState} from 'react';
 import Board from './components/ui/Board.jsx'; 
 
+// Component chính Game
+// - Quản lý history của các nước đi
+// - Điều khiển lượt chơi hiện tại, thứ tự hiển thị danh sách nước đi
+// - Truyền props cần thiết xuống `Board` và xử lý các callback
 function Game() {
+  // history: mảng các trạng thái board (mỗi phần tử: { squares: [...], location })
   const [history, setHistory] = useState([ { squares: Array(9).fill(null), location: null } ]);
+  // currentMove: index của history đang được hiển thị
   const [currentMove, setCurrentMove] = useState(0);
+  // isAscending: hiển thị danh sách nước đi theo thứ tự tăng hay giảm
   const [isAscending, setIsAscending] = useState(true);
+  // xIsNext: người chơi tiếp theo là X khi currentMove chẵn
   const xIsNext = (currentMove % 2) === 0;
+  // currentSquares: trạng thái board hiện tại (mảng 9 phần tử)
   const currentSquares = history[currentMove].squares;
 
+  // handlePlay: được gọi khi `Board` báo có nước đi mới
+  // nextSquares: mảng mới sau khi chơi
   function handlePlay(nextSquares) {
+    // tìm index đã thay đổi so với trạng thái hiện tại
     const oldSquares = history[currentMove].squares;
     let clickedIndex = -1;
     for (let i = 0; i < nextSquares.length; i++) {
@@ -18,25 +30,32 @@ function Game() {
       }
     }
 
+    // tạo entry mới chứa squares và vị trí vừa đánh
     const nextHistoryEntry = { squares: nextSquares, location: clickedIndex };
+    // cắt history tới currentMove (nếu người dùng đã nhảy lại rồi đánh new move)
     const nextHistory = [...history.slice(0, currentMove + 1), nextHistoryEntry];
     
     setHistory(nextHistory);
+    // chuyển currentMove tới cuối history mới
     setCurrentMove(nextHistory.length - 1);
   }
 
+  // jumpTo: nhảy tới một nước bất kỳ trong lịch sử
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
 
+  // toggle thứ tự sắp xếp danh sách nước đi
   function handleSortToggle() {
     setIsAscending(!isAscending);
   }
 
+  // Tạo danh sách các nút để nhảy tới từng nước (history)
   const moves = history.map((historyEntry, move) => {
     const location = historyEntry.location;
     let description;
 
+    // Nếu là nước hiện tại thì hiển thị trạng thái đặc biệt
     if (move === currentMove) {
       const row = Math.floor(location / 3);
       const col = location % 3;
@@ -54,6 +73,7 @@ function Game() {
       )
     }
 
+    // Thông tin vị trí hiển thị cho các nút khác
     if (move > 0) {
       const row = Math.floor(location / 3);
       const col = location % 3;
@@ -74,6 +94,7 @@ function Game() {
     )
   });
 
+  // sắp xếp danh sách nếu cần  
   const sortedMoves = isAscending ? moves : moves.slice().reverse();
 
   return (
@@ -84,10 +105,9 @@ function Game() {
         </h1>
         <div className="flex flex-col items-center md:flex-row md:items-start md:justify-center">
           <div className="mb-8 md:mb-8 md:mr-10">
+            {/* Truyền trạng thái và callback xuống Board */}
             <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
           </div>
-
-          {/* Cột 2: Game Info (Lịch sử) */}
           <div className="text-lg text-gray-900 dark:text-gray-100">
             <button
               className="px-4 py-1 mb-4 text-white bg-gray-600 rounded-md hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800"

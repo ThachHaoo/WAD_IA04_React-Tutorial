@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import Board from './components/ui/Board.jsx'; 
 
-export default function Game() {
+function Game() {
   const [history, setHistory] = useState([ { squares: Array(9).fill(null), location: null } ]);
   const [currentMove, setCurrentMove] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
@@ -83,7 +83,7 @@ export default function Game() {
           Tic Tac Toe
         </h1>
         <div className="flex flex-col items-center md:flex-row md:items-start md:justify-center">
-          <div className="mb-8 md:mb-0 md:mr-10">
+          <div className="mb-8 md:mb-8 md:mr-10">
             <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
           </div>
 
@@ -103,3 +103,5 @@ export default function Game() {
     </div> 
   );
 }
+
+export default Game;

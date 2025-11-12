@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # WAD_IA04_React-Tutorial
 23120255 - Lê Tấn Hiệp - 23_3 - IA04 - Web Application Development
+=======
+>>>>>>> ad1329c644141fbd20aacbaf87475fcd98c08c53
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
